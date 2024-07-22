@@ -1,3 +1,18 @@
+// apply plugin:'maven-publish'
+//
+// subprojects{
+//     publishing {
+//         publications {
+//             "$project.name"(MavenPublication) {
+//                 groupId project.group
+//                     artifactId project.name
+//                     version project.version
+//                     from components.java
+//             }
+//         }
+//     }
+// }
+
 buildscript {
     repositories {
         gradlePluginPortal()

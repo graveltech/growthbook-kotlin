@@ -3,6 +3,7 @@ pluginManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
+        jcenter()
     }
 }
 
@@ -11,3 +12,4 @@ include(":GrowthBook")
 include(":Core")
 include(":NetworkDispatcherKtor")
 include(":NetworkDispatcherOkHttp")
+include(":gbsample")

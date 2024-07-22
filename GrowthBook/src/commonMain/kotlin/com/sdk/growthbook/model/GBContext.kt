@@ -9,11 +9,7 @@ import com.sdk.growthbook.stickybucket.GBStickyBucketService
 /**
  * Defines the GrowthBook context.
  */
-class GBContext(
-
-    /**
-     * Registered API Key for GrowthBook SDK
-     */
+data class GBContext(
     val apiKey: String,
 
     /**

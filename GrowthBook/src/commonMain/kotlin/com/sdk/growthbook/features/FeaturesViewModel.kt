@@ -25,6 +25,7 @@ internal interface FeaturesFlowDelegate {
  * View Model for Features
  */
 internal class FeaturesViewModel(
+    private val key: String,
     private val delegate: FeaturesFlowDelegate,
     private val dataSource: FeaturesDataSource,
     private val encryptionKey: String? = null,
@@ -42,7 +43,7 @@ internal class FeaturesViewModel(
         try {
             // Check for cache data
             val dataModel = manager.getLayer().getData(
-                Constants.FEATURE_CACHE,
+                Constants.FEATURE_CACHE + key,
                 FeaturesDataModel.serializer()
             )
 
@@ -118,7 +119,7 @@ internal class FeaturesViewModel(
         try {
             if (dataModel != null) {
                 manager.getLayer().putData(
-                    fileName = Constants.FEATURE_CACHE,
+                    fileName = Constants.FEATURE_CACHE + key,
                     content = dataModel,
                     serializer = FeaturesDataModel.serializer()
                 )

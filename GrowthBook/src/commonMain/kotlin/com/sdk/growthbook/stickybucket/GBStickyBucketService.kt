@@ -23,4 +23,6 @@ interface GBStickyBucketService {
      * instances (i.e. Redis) will instead perform a multi-query inside getAllAssignments instead.
      */
     fun getAllAssignments(attributes: Map<String, String>): Map<String, GBStickyAssignmentsDocument>
+
+    fun setSimplePrefix(prefix: String)
 }

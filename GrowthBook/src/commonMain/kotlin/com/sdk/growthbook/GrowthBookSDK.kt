@@ -29,7 +29,9 @@ typealias GBFeatureUsageCallback = (featureKey: String, gbFeatureResult: GBFeatu
  * that takes a Context object in the constructor.
  * It exposes two main methods: feature and run.
  */
-class GrowthBookSDK() : FeaturesFlowDelegate {
+
+
+class GrowthBookSDK(private val key: String) : FeaturesFlowDelegate {
 
     private var refreshHandler: GBCacheRefreshHandler? = null
     private lateinit var networkDispatcher: NetworkDispatcher
@@ -37,18 +39,18 @@ class GrowthBookSDK() : FeaturesFlowDelegate {
     private var attributeOverrides: Map<String, Any> = emptyMap()
     private var forcedFeatures: Map<String, Any> = emptyMap()
 
-    //@ThreadLocal
-    internal companion object {
-        internal lateinit var gbContext: GBContext
+    internal val gbContext by lazy {
+        GbContextProvider.getGbContext(key) ?: throw IllegalArgumentException("GbContext not initialize")
     }
 
     internal constructor(
+        key: String,
         context: GBContext,
         refreshHandler: GBCacheRefreshHandler?,
         networkDispatcher: NetworkDispatcher,
         features: GBFeatures? = null
-    ) : this() {
-        gbContext = context
+    ) : this(key) {
+        GbContextProvider.putGbContext(key, context)
         this.refreshHandler = refreshHandler
         this.networkDispatcher = networkDispatcher
 
@@ -58,8 +60,12 @@ class GrowthBookSDK() : FeaturesFlowDelegate {
          */
         this.featuresViewModel =
             FeaturesViewModel(
+                key = key,
                 delegate = this,
-                dataSource = FeaturesDataSource(dispatcher = networkDispatcher),
+                dataSource = FeaturesDataSource(
+                    dispatcher = networkDispatcher,
+                    gbContext = gbContext
+                ),
                 encryptionKey = gbContext.encryptionKey,
             )
         if (features != null) {

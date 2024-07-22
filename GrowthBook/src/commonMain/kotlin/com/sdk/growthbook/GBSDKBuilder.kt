@@ -71,21 +71,22 @@ abstract class SDKBuilder(
  * Remote eval - Whether to use Remote Evaluation
  */
 class GBSDKBuilder(
-    apiKey: String,
-    hostURL: String,
-    networkDispatcher: NetworkDispatcher,
-    attributes: Map<String, Any>,
-    encryptionKey: String? = null,
-    trackingCallback: GBTrackingCallback,
-    remoteEval: Boolean = false,
-) : SDKBuilder(
-    apiKey, hostURL,
-    attributes, trackingCallback, encryptionKey, networkDispatcher, remoteEval
+    val apiKey: String,
+    val hostURL: String,
+    val attributes: Map<String, Any>,
+    val trackingCallback: GBTrackingCallback,
+    val networkDispatcher: NetworkDispatcher,
+    val encryptionKey: String? = null,
+    val remoteEval: Boolean = false,
 ) {
 
     private var refreshHandler: GBCacheRefreshHandler? = null
     private var stickyBucketService: GBStickyBucketService? = null
     private var featureUsageCallback: GBFeatureUsageCallback? = null
+
+    internal var qaMode: Boolean = false
+    internal var forcedVariations: Map<String, Int> = HashMap()
+    internal var enabled: Boolean = true
 
     /**
      * Set Refresh Handler - Will be called when cache is refreshed
@@ -116,7 +117,7 @@ class GBSDKBuilder(
     fun setPrefixForStickyBucketCachedDirectory(
         prefix: String = "gbStickyBuckets__"
     ): GBSDKBuilder {
-        this.stickyBucketService = GBStickyBucketServiceImp(prefix, CachingImpl.getLayer())
+        this.stickyBucketService = GBStickyBucketServiceImp(apiKey, CachingImpl.getLayer())
         return this
     }
 
@@ -130,9 +131,33 @@ class GBSDKBuilder(
     }
 
     /**
+     * Set Forced Variations - Default Empty
+     */
+    fun setForcedVariations(forcedVariations: Map<String, Int>): GBSDKBuilder {
+        this.forcedVariations = forcedVariations
+        return this
+    }
+
+    /**
+     * Set QA Mode - Default Disabled
+     */
+    fun setQAMode(isEnabled: Boolean): GBSDKBuilder {
+        this.qaMode = isEnabled
+        return this
+    }
+
+    /**
+     * Set Enabled - Default Disabled - If Enabled - then experiments will be disabled
+     */
+    fun setEnabled(isEnabled: Boolean): GBSDKBuilder {
+        this.enabled = isEnabled
+        return this
+    }
+
+    /**
      * Initialize the Kotlin SDK
      */
-    override fun initialize(): GrowthBookSDK {
+    fun initialize(): GrowthBookSDK {
 
         val gbContext = GBContext(
             apiKey = apiKey,
@@ -149,6 +174,7 @@ class GBSDKBuilder(
         )
 
         return GrowthBookSDK(
+            apiKey,
             gbContext,
             refreshHandler,
             networkDispatcher

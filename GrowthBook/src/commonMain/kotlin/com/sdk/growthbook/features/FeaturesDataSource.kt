@@ -1,6 +1,7 @@
 package com.sdk.growthbook.features
 
 import com.sdk.growthbook.GrowthBookSDK
+import com.sdk.growthbook.model.GBContext
 import com.sdk.growthbook.network.NetworkDispatcher
 import com.sdk.growthbook.utils.FeatureRefreshStrategy
 import com.sdk.growthbook.utils.GBFeatures
@@ -14,7 +15,10 @@ import kotlinx.serialization.json.Json
 /**
  * DataSource for Feature API
  */
-internal class FeaturesDataSource(private val dispatcher: NetworkDispatcher) {
+internal class FeaturesDataSource(
+    private val dispatcher: NetworkDispatcher,
+    private val gbContext: GBContext
+) {
 
     private val jsonParser: Json
         get() = Json { prettyPrint = true; isLenient = true; ignoreUnknownKeys = true }
@@ -26,8 +30,8 @@ internal class FeaturesDataSource(private val dispatcher: NetworkDispatcher) {
         featureRefreshStrategy: FeatureRefreshStrategy =
             FeatureRefreshStrategy.STALE_WHILE_REVALIDATE
     ) = FeatureURLBuilder().buildUrl(
-        GrowthBookSDK.gbContext.hostURL,
-        GrowthBookSDK.gbContext.apiKey,
+        gbContext.hostURL,
+        gbContext.apiKey,
         featureRefreshStrategy
     )
 

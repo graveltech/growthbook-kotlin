@@ -34,7 +34,7 @@ kotlin {
                 implementation("com.ionspin.kotlin:bignum:0.3.3")
                 implementation("com.soywiz.korlibs.krypto:krypto:$kryptoVersion")
 
-                api("io.growthbook.sdk:Core:1.0.0")
+                implementation(project(":Core"))
                 api(
                     "org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion"
                 )
@@ -54,14 +54,6 @@ kotlin {
             dependencies {
                 implementation("androidx.startup:startup-runtime:1.1.1")
                 implementation("com.soywiz.korlibs.krypto:krypto-android:$kryptoVersion")
-            }
-        }
-        val androidTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13.2")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
-                implementation("io.ktor:ktor-client-mock:$ktorVersion")
             }
         }
 

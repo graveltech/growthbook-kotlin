@@ -69,4 +69,7 @@ internal class GBStickyBucketServiceImp(
 
         return docs
     }
+
+    override fun setSimplePrefix(prefix: String) {
+    }
 }

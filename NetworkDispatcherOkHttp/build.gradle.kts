@@ -38,12 +38,6 @@ kotlin {
                 implementation("com.squareup.okhttp3:okhttp:4.9.0")
             }
         }
-        val androidTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("com.squareup.okhttp3:mockwebserver:4.9.0")
-            }
-        }
     }
 }
 

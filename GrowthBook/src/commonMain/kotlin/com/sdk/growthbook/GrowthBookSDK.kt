@@ -40,7 +40,7 @@ class GrowthBookSDK(private val key: String) : FeaturesFlowDelegate {
     private var forcedFeatures: Map<String, Any> = emptyMap()
 
     internal val gbContext by lazy {
-        GbContextProvider.getGbContext(key) ?: throw IllegalArgumentException("GbContext not initialize")
+        GBContextProvider.getGbContext(key) ?: throw IllegalArgumentException("GBContext not initialize")
     }
 
     internal constructor(
@@ -50,7 +50,7 @@ class GrowthBookSDK(private val key: String) : FeaturesFlowDelegate {
         networkDispatcher: NetworkDispatcher,
         features: GBFeatures? = null
     ) : this(key) {
-        GbContextProvider.putGbContext(key, context)
+        GBContextProvider.putGbContext(key, context)
         this.refreshHandler = refreshHandler
         this.networkDispatcher = networkDispatcher
 

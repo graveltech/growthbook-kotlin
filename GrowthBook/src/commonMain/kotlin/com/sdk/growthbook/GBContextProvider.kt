@@ -1,10 +1,11 @@
 package com.sdk.growthbook
 
 import com.sdk.growthbook.model.GBContext
+import java.util.concurrent.ConcurrentHashMap
 
-object GbContextProvider {
+object GBContextProvider {
 
-    private val gbContextMap: MutableMap<String, GBContext> = mutableMapOf()
+    private val gbContextMap: MutableMap<String, GBContext> = ConcurrentHashMap()
 
     fun putGbContext(key: String, gbContext: GBContext) {
         gbContextMap[key] = gbContext

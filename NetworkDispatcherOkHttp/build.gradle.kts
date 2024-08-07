@@ -62,9 +62,9 @@ android {
 publishing {
     publications {
         withType<MavenPublication> {
-            groupId = "com.github.utsmannn"
+            groupId = "com.github.graveltech"
             artifactId = "Gb-NetworkDispatcherOkHttp"
-            version = "1.2.0"
+            version = "1.2.1"
         }
     }
 }
